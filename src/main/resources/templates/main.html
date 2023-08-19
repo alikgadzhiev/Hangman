@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <style>
+    </style>
+    <script>
+        function logout() {
+            let username = document.getElementById('username').innerHTML;
+            let xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    window.location.href = "http://localhost:80/login.html";
+                    alert("Successfully logged out!");
+                }
+            }
+            xhr.open("DELETE", "http://localhost:80/deleteAttachment/" + username);
+            xhr.send();
+        }
+
+        function enter() {
+            let username = document.getElementById('username').innerHTML;
+            let room = document.getElementById("room").value;
+            let ok = 1;
+
+            if (room === "") {
+                alert("Enter the name of the room!");
+                return;
+            }
+
+            let xhr = new XMLHttpRequest();
+            xhr.responseType = 'text';
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.response !== "Safe") {
+                        ok = 0;
+                        alert(xhr.response);
+                    } else {
+                        let xhr1 = new XMLHttpRequest();
+                        xhr1.responseType = 'text';
+
+                        xhr1.onreadystatechange = function () {
+                            if (xhr1.readyState === XMLHttpRequest.DONE) {
+                                window.location.href = "http://localhost:80/room/" + username + "/" + room;
+                            }
+                        }
+                        xhr1.open("POST", "http://localhost:80/updateAttachment", true);
+                        xhr1.setRequestHeader('Content-Type', 'application/json');
+                        xhr1.send(JSON.stringify({
+                            username: username,
+                            room: room
+                        }));
+                    }
+                }
+            }
+            xhr.open("GET", "http://localhost:80/checkTheRoom/" + room);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+<p id="username" th:text="${username}"/>
+<form id="logout">
+    <button type="button" onclick="logout()">Logout</button>
+</form>
+
+<label for="room">The name of the room: </label>
+<input type="text" id="room"><br><br>
+
+<form>
+    <button type="button" onclick="enter()">Enter the room</button>
+</form>
+
+</body>
+</html>

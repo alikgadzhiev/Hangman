@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <style></style>
+    <script>
+        function login() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let defaultRoom = "default";
+            if (username === "" || password === "") {
+                console.log("Enter the password or login!");
+                return;
+            }
+            let xhr = new XMLHttpRequest();
+            let ok = 1;
+            xhr.responseType = 'text';
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.response !== "Ok") {
+                        alert(xhr.response);
+                    } else {
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                console.log("Added");
+                            }
+                        }
+                        xhr.open("POST", "http://localhost:80/addAttachment", true);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.send(JSON.stringify({
+                            username: username,
+                            room: defaultRoom
+                        }));
+                        window.location.href = "http://localhost:80/main/" + username;
+                    }
+                }
+            }
+            xhr.open("POST", "http://localhost:80/login", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                username: username,
+                password: password
+            }));
+        }
+    </script>
+</head>
+<body>
+<label for="username">Username: </label>
+<input type="text" id="username"><br><br>
+<label for="password">Password: </label>
+<input type="password" id="password"><br><br>
+<form id="login">
+    <button type="button" onclick="login()">Login</button>
+</form>
+<a href="resetPassword.html">Forgot password?</a>
+<a href="signup.html">Sign up</a>
+</body>
+</html>

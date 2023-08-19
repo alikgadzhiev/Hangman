@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Room</title>
+</head>
+<body>
+<p id="username" th:text="${username}"/>
+<p id="room" th:text="${room}"/>
+<form id="exit">
+    <button type="button" onclick="exit()">Exit</button>
+</form>
+<form id="connect">
+    <button type="button" onclick="connect()">Connect</button>
+</form>
+<label for="word">Type the word: </label>
+<input type="text" id="word"><br><br>
+
+<form id="send">
+    <button type="button" onclick="send()">Send</button>
+</form>
+
+<label for="letter">Guess the character: </label>
+<input type="text" id="letter"><br><br>
+
+<form id="guessLetter">
+    <button type="button" onclick="guess()">Guess</button>
+</form>
+
+<label for="lives">Lives left: </label>
+<p id="lives"></p>
+
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+
+<p id="place"></p>
+
+<p id="socketData"></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/room.js"></script>
+</body>
+</html>
